@@ -2,35 +2,53 @@ package ru.netology.javaqa.RadioService.services;
 
 public class Radio {
     private int currentRadioStationNumber;
+    private int amountOfRadioStations = 10;
+    private int minRadioStationNumber = 0;
+    private int maxRadioStationNumber = amountOfRadioStations - 1;
     private int volume;
+    private int minVolume = 0;
+    private int maxVolume = 100;
+
+    public Radio() {
+
+    }
+
+    public Radio(int amountOfRadioStations) {
+        this.amountOfRadioStations = amountOfRadioStations;
+        maxRadioStationNumber = amountOfRadioStations - 1;
+    }
 
     public int getCurrentRadioStationNumber() {
         return currentRadioStationNumber;
     }
 
+    public int getMaxRadioStationNumber() {
+        return maxRadioStationNumber;
+    }
+
     public void setCurrentRadioStationNumber(int newRadioStationNumber) {
-        if (newRadioStationNumber < 0) {
-            return;
+        if (newRadioStationNumber < minRadioStationNumber) {
+            currentRadioStationNumber = maxRadioStationNumber;
+        } else if (newRadioStationNumber > maxRadioStationNumber) {
+            currentRadioStationNumber = minRadioStationNumber;
+        } else {
+            this.currentRadioStationNumber = newRadioStationNumber;
         }
-        if (newRadioStationNumber > 9) {
-            return;
-        }
-        currentRadioStationNumber = newRadioStationNumber;
     }
 
     public void next() {
-        if (currentRadioStationNumber < 9) {
-            currentRadioStationNumber++;
+        if (currentRadioStationNumber == maxRadioStationNumber) {
+            currentRadioStationNumber = minRadioStationNumber;
         } else {
-            currentRadioStationNumber = 0;
+            currentRadioStationNumber++;
         }
     }
 
     public void prev() {
-        if (currentRadioStationNumber > 0) {
-            currentRadioStationNumber--;
+        if (currentRadioStationNumber == minRadioStationNumber) {
+            currentRadioStationNumber = maxRadioStationNumber;
         } else {
-            currentRadioStationNumber = 9;
+            currentRadioStationNumber--;
         }
     }
 
@@ -39,23 +57,23 @@ public class Radio {
     }
 
     public void setVolume(int newVolume) {
-        if (newVolume < 0) {
-            return;
+        if (newVolume < minVolume) {
+            volume = minVolume;
+        } else if (newVolume > maxVolume) {
+            volume = maxVolume;
+        } else {
+            volume = newVolume;
         }
-        if (newVolume > 100) {
-            newVolume = 100;
-        }
-        volume = newVolume;
     }
 
     public void increaseVolumeByOne() {
-        if (volume < 100) {
+        if (volume < maxVolume) {
             volume++;
         }
     }
 
     public void decreaseVolumeByOne() {
-        if (volume > 0) {
+        if (volume > minVolume) {
             volume--;
         }
     }
